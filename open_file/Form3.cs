@@ -47,6 +47,9 @@ namespace open_file
                 }
                 else
                 {
+                    if (!textBox1.Text.EndsWith("\\")) { 
+                        textBox1.Text += "\\";
+                    }
                     listBox1.Items.Add(textBox1.Text);
                 }
             }
