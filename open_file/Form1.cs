@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
@@ -33,8 +34,18 @@ namespace open_file
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                string str = node.InnerText;
-                this.comboBox1.Items.Add(str);
+                if (node.Name == "imgefile")
+                {
+                    if( node.InnerText != "")
+                    {
+                        this.BackgroundImage = Image.FromFile(node.InnerText);
+                    }
+                }
+                else
+                {
+                    string str = node.InnerText;
+                    this.comboBox1.Items.Add(str);
+                }
             }
            
             this.comboBox1.SelectedIndex = 0;
@@ -78,9 +89,25 @@ namespace open_file
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2(file);
+            /*Form2 form2 = new Form2(file);
             form2.StartPosition = FormStartPosition.CenterScreen;
-            form2.Show();
+            form2.Show();*/
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "请选择一张图片";
+            ofd.Filter = "图片|*.jpg;*.png;*.gif;*.jpeg;*.bmp";
+            ofd.ShowDialog();
+            string imgFile = ofd.FileName;
+            if (imgFile != "")
+            {
+                this.BackgroundImage = Image.FromFile(imgFile);
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(xmlTxt);
+                XmlElement xmlElement = xmlDoc.DocumentElement;
+                XmlElement xmlElement1 = xmlDoc.CreateElement("imgefile");
+                xmlElement1.InnerText = imgFile;
+                xmlElement.AppendChild(xmlElement1);
+                xmlDoc.Save(xmlTxt);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)

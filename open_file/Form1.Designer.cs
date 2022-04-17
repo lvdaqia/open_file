@@ -46,17 +46,19 @@ namespace open_file
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(27, 93);
+            this.textBox1.Location = new System.Drawing.Point(54, 186);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(365, 48);
+            this.textBox1.Size = new System.Drawing.Size(726, 92);
             this.textBox1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(408, 93);
+            this.button1.Location = new System.Drawing.Point(816, 186);
+            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(81, 48);
+            this.button1.Size = new System.Drawing.Size(162, 96);
             this.button1.TabIndex = 1;
             this.button1.Text = "打开文件";
             this.button1.UseVisualStyleBackColor = true;
@@ -64,17 +66,19 @@ namespace open_file
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(27, 180);
+            this.textBox2.Location = new System.Drawing.Point(54, 360);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(365, 48);
+            this.textBox2.Size = new System.Drawing.Size(726, 92);
             this.textBox2.TabIndex = 2;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(408, 180);
+            this.button2.Location = new System.Drawing.Point(816, 360);
+            this.button2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(81, 48);
+            this.button2.Size = new System.Drawing.Size(162, 96);
             this.button2.TabIndex = 3;
             this.button2.Text = "打开目录";
             this.button2.UseVisualStyleBackColor = true;
@@ -83,44 +87,50 @@ namespace open_file
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(27, 42);
+            this.comboBox1.Location = new System.Drawing.Point(54, 84);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(365, 20);
+            this.comboBox1.Size = new System.Drawing.Size(726, 32);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 17);
+            this.label1.Location = new System.Drawing.Point(12, 34);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 12);
+            this.label1.Size = new System.Drawing.Size(0, 24);
             this.label1.TabIndex = 5;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(27, 244);
+            this.groupBox1.Location = new System.Drawing.Point(54, 488);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(365, 77);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Size = new System.Drawing.Size(730, 154);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(408, 261);
+            this.button3.Location = new System.Drawing.Point(816, 522);
+            this.button3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(81, 41);
+            this.button3.Size = new System.Drawing.Size(162, 82);
             this.button3.TabIndex = 7;
-            this.button3.Text = "adb push";
+            this.button3.Text = "设置壁纸";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(408, 35);
+            this.button4.Location = new System.Drawing.Point(816, 70);
+            this.button4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(81, 33);
+            this.button4.Size = new System.Drawing.Size(162, 66);
             this.button4.TabIndex = 8;
             this.button4.Text = "路径管理";
             this.button4.UseVisualStyleBackColor = true;
@@ -128,9 +138,10 @@ namespace open_file
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(515, 365);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1094, 820);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
@@ -140,6 +151,7 @@ namespace open_file
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "Form1";
             this.Text = "Open_TXTfile";
             this.groupBox1.ResumeLayout(false);
