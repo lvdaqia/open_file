@@ -11,7 +11,7 @@ namespace open_file
     {
         private String file;
         String xmlTxt = System.Environment.CurrentDirectory + "//ldq.xml";
-
+        String imgefile = "";
         public Form1()
         {
             InitializeComponent();
@@ -38,7 +38,18 @@ namespace open_file
                 {
                     if( node.InnerText != "")
                     {
-                        this.BackgroundImage = Image.FromFile(node.InnerText);
+                        if(  File.Exists(node.InnerText))
+                        {
+                            this.BackgroundImage = Image.FromFile(node.InnerText);
+                            imgefile = node.InnerText;
+                        }
+                        else
+                        {
+                            MessageBox.Show("该壁纸文件已经被删除");
+                            node.InnerText = imgefile;
+                            xmlDocument.Save(xmlTxt);
+                        }
+                        
                     }
                 }
                 else
@@ -100,12 +111,25 @@ namespace open_file
             if (imgFile != "")
             {
                 this.BackgroundImage = Image.FromFile(imgFile);
+                imgefile = imgFile;
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlTxt);
-                XmlElement xmlElement = xmlDoc.DocumentElement;
-                XmlElement xmlElement1 = xmlDoc.CreateElement("imgefile");
-                xmlElement1.InnerText = imgFile;
-                xmlElement.AppendChild(xmlElement1);
+                Boolean ImageNodeHas = false;
+                foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
+                {
+                    if (node.Name == ("imgefile"))
+                    {
+                        node.InnerText = imgFile;
+                        ImageNodeHas = true;
+                    }
+                }
+                if ( !ImageNodeHas )
+                {
+                    XmlElement xmlElement = xmlDoc.DocumentElement;
+                    XmlElement xmlElement1 = xmlDoc.CreateElement("imgefile");
+                    xmlElement1.InnerText = imgFile;
+                    xmlElement.AppendChild(xmlElement1);
+                }
                 xmlDoc.Save(xmlTxt);
             }
         }
@@ -113,7 +137,7 @@ namespace open_file
         private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form3 form3 = new Form3( xmlTxt );
+            Form3 form3 = new Form3( xmlTxt,imgefile );
             form3.StartPosition = FormStartPosition.CenterScreen;
             form3.Show();
         }

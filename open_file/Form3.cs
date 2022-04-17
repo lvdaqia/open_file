@@ -16,17 +16,23 @@ namespace open_file
     public partial class Form3 : Form
     {
         string xmlTxt;
-        public Form3( string xmlTxt )
+        string imagefile;
+        public Form3( string xmlTxt, string imagefile )
         {
             InitializeComponent();
             this.xmlTxt = xmlTxt;
+            this.imagefile = imagefile;
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlTxt);
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                string str = node.InnerText;
-                this.listBox1.Items.Add(str);
+                if ( node.Name != "imgefile")
+                {
+                    string str = node.InnerText;
+                    this.listBox1.Items.Add(str);
+                }
+
             }
 
            
@@ -60,7 +66,7 @@ namespace open_file
 
         private void Form3_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if( File.Exists(xmlTxt))
+            if (File.Exists(xmlTxt))
             {
                 File.Delete(xmlTxt);
             }
@@ -70,13 +76,20 @@ namespace open_file
             string[] all_path = new string[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                XmlElement xmlElement1 = xmlDocument.CreateElement("path" + i);
-                xmlElement1.InnerText = listBox1.Items[i].ToString();
-                xmlElement.AppendChild(xmlElement1);
-                //all_path[i] = listBox1.GetItemText(listBox1.Items[i]);
+                if (listBox1.Items[i].ToString() != "")
+                {
+                    XmlElement xmlElement1 = xmlDocument.CreateElement("path" + i);
+                    xmlElement1.InnerText = listBox1.Items[i].ToString();
+                    xmlElement.AppendChild(xmlElement1);
+                }
+            }
+            if (imagefile != "")
+            {
+                XmlElement xmlElement2 = xmlDocument.CreateElement("imgefile");
+                xmlElement2.InnerText = imagefile;
+                xmlElement.AppendChild(xmlElement2);
             }
             xmlDocument.Save(xmlTxt);
-            //File.WriteAllLines(@"c:\ldq.txt", all_path);
             Application.Restart();
             Process.GetCurrentProcess()?.Kill();
         }
