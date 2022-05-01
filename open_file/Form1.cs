@@ -68,7 +68,7 @@ namespace open_file
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string txt_file = file + textBox1.Text;
+            string txt_file = file + ldq_textBox1.Text;
             if (File.Exists(txt_file))
             {
                 System.Diagnostics.Process.Start("Notepad++.exe", txt_file);
@@ -86,7 +86,7 @@ namespace open_file
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string path = file+textBox2.Text.Replace( "/", "\\" );
+            string path = file+ldq_textBox2.Text.Replace( "/", "\\" );
             if (Directory.Exists(path))
             {
                 System.Diagnostics.Process.Start("Explorer.exe", path);
@@ -103,6 +103,7 @@ namespace open_file
             /*Form2 form2 = new Form2(file);
             form2.StartPosition = FormStartPosition.CenterScreen;
             form2.Show();*/
+           
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Title = "请选择一张图片";
             ofd.Filter = "图片|*.jpg;*.png;*.gif;*.jpeg;*.bmp";
@@ -131,6 +132,7 @@ namespace open_file
                     xmlElement.AppendChild(xmlElement1);
                 }
                 xmlDoc.Save(xmlTxt);
+                Application.Restart();
             }
         }
 
@@ -141,6 +143,23 @@ namespace open_file
             form3.StartPosition = FormStartPosition.CenterScreen;
             form3.Show();
         }
-      
+
+        private void button3_MouseDown(object sender, MouseEventArgs e)
+        {
+            if( e.Button == MouseButtons.Right)
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(xmlTxt);
+                foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
+                {
+                    if (node.Name == ("imgefile"))
+                    {
+                        node.InnerText = "";
+                    }
+                }
+                xmlDoc.Save(xmlTxt);
+                Application.Restart();
+            }
+        }
     }
 }
