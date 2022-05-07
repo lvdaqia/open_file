@@ -154,6 +154,7 @@ namespace open_file
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "Open_TXTfile";
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

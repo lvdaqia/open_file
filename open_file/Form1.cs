@@ -146,7 +146,7 @@ namespace open_file
 
         private void button3_MouseDown(object sender, MouseEventArgs e)
         {
-            if( e.Button == MouseButtons.Right)
+            if ( e.Button == MouseButtons.Right)
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlTxt);
@@ -160,6 +160,11 @@ namespace open_file
                 xmlDoc.Save(xmlTxt);
                 Application.Restart();
             }
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
     }
 }
