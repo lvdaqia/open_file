@@ -15,7 +15,6 @@ namespace open_file
         public Form1()
         {
             InitializeComponent();
-
             if (!File.Exists(xmlTxt))
             {
                 XmlDocument xml = new XmlDocument();
@@ -23,7 +22,7 @@ namespace open_file
                 xml.AppendChild(xmlElement);
                 XmlElement xmlElement2 = xml.CreateElement("path1");
                 xmlElement.AppendChild(xmlElement2);
-                String current_path = System.Environment.CurrentDirectory;
+                String current_path = System.Environment.CurrentDirectory+"\\";
                 xmlElement2.InnerText = current_path;
                 xml.Save(xmlTxt);
             }
@@ -69,6 +68,10 @@ namespace open_file
         private void button1_Click(object sender, EventArgs e)
         {
             string txt_file = file + ldq_textBox1.Text;
+            if (txt_file.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
+            {
+                txt_file = txt_file.Remove(txt_file.Length - 2,2);
+            }
             if (File.Exists(txt_file))
             {
                 System.Diagnostics.Process.Start("Notepad++.exe", txt_file);
