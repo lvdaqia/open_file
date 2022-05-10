@@ -46,10 +46,9 @@ namespace open_file
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(816, 186);
-            this.button1.Margin = new System.Windows.Forms.Padding(6);
+            this.button1.Location = new System.Drawing.Point(573, 169);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(239, 96);
+            this.button1.Size = new System.Drawing.Size(120, 48);
             this.button1.TabIndex = 1;
             this.button1.Text = "打开文件";
             this.button1.UseVisualStyleBackColor = true;
@@ -57,10 +56,9 @@ namespace open_file
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(816, 360);
-            this.button2.Margin = new System.Windows.Forms.Padding(6);
+            this.button2.Location = new System.Drawing.Point(573, 278);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(239, 96);
+            this.button2.Size = new System.Drawing.Size(120, 48);
             this.button2.TabIndex = 3;
             this.button2.Text = "打开目录";
             this.button2.UseVisualStyleBackColor = true;
@@ -68,41 +66,38 @@ namespace open_file
             // 
             // comboBox1
             // 
+            this.comboBox1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(54, 84);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(6);
+            this.comboBox1.Location = new System.Drawing.Point(70, 64);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(726, 32);
+            this.comboBox1.Size = new System.Drawing.Size(445, 29);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 34);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(6, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 24);
+            this.label1.Size = new System.Drawing.Size(0, 22);
             this.label1.TabIndex = 5;
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(54, 488);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
+            this.groupBox1.Location = new System.Drawing.Point(70, 364);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox1.Size = new System.Drawing.Size(730, 154);
+            this.groupBox1.Size = new System.Drawing.Size(445, 103);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(816, 522);
-            this.button3.Margin = new System.Windows.Forms.Padding(6);
+            this.button3.Location = new System.Drawing.Point(573, 381);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(252, 120);
+            this.button3.Size = new System.Drawing.Size(126, 60);
             this.button3.TabIndex = 7;
             this.button3.Text = "设置壁纸\n\n(右键恢复默认壁纸)";
             this.button3.UseVisualStyleBackColor = true;
@@ -111,10 +106,9 @@ namespace open_file
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(816, 70);
-            this.button4.Margin = new System.Windows.Forms.Padding(6);
+            this.button4.Location = new System.Drawing.Point(573, 64);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(239, 66);
+            this.button4.Size = new System.Drawing.Size(120, 33);
             this.button4.TabIndex = 8;
             this.button4.Text = "路径管理";
             this.button4.UseVisualStyleBackColor = true;
@@ -122,26 +116,30 @@ namespace open_file
             // 
             // ldq_textBox1
             // 
-            this.ldq_textBox1.Location = new System.Drawing.Point(54, 186);
+            this.ldq_textBox1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.ldq_textBox1.Location = new System.Drawing.Point(70, 154);
+            this.ldq_textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ldq_textBox1.Multiline = true;
             this.ldq_textBox1.Name = "ldq_textBox1";
-            this.ldq_textBox1.Size = new System.Drawing.Size(726, 96);
+            this.ldq_textBox1.Size = new System.Drawing.Size(445, 77);
             this.ldq_textBox1.TabIndex = 9;
             // 
             // ldq_textBox2
             // 
-            this.ldq_textBox2.Location = new System.Drawing.Point(58, 360);
+            this.ldq_textBox2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.ldq_textBox2.Location = new System.Drawing.Point(70, 263);
+            this.ldq_textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ldq_textBox2.Multiline = true;
             this.ldq_textBox2.Name = "ldq_textBox2";
-            this.ldq_textBox2.Size = new System.Drawing.Size(726, 96);
+            this.ldq_textBox2.Size = new System.Drawing.Size(445, 75);
             this.ldq_textBox2.TabIndex = 10;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1170, 820);
+            this.ClientSize = new System.Drawing.Size(750, 515);
             this.Controls.Add(this.ldq_textBox2);
             this.Controls.Add(this.ldq_textBox1);
             this.Controls.Add(this.button4);
@@ -151,7 +149,6 @@ namespace open_file
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "Open_TXTfile";
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
