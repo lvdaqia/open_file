@@ -10,11 +10,12 @@ namespace open_file
     public partial class Form1 : Form
     {
         private String file;
-        String xmlTxt = System.Environment.CurrentDirectory + "//ldq.xml";
+        String xmlTxt;
         String imgefile = "";
         public Form1()
         {
             InitializeComponent();
+            xmlTxt = getXml();
             if (!File.Exists(xmlTxt))
             {
                 XmlDocument xml = new XmlDocument();
@@ -64,7 +65,19 @@ namespace open_file
             label1.AutoSize = false;
            
         }
-
+        public string getXml()
+        {
+            string  xmlPath = System.Environment.CurrentDirectory;
+            xmlPath = xmlPath.Replace("/", "\\");
+            xmlPath = xmlPath.Substring(0, xmlPath.LastIndexOf("\\"));
+            xmlPath = xmlPath + "\\XmlData";
+            if( !Directory.Exists(xmlPath))
+            {
+                Directory.CreateDirectory(xmlPath);
+            }
+            string ldqxmlTxt = xmlPath + "\\ldq.xml";
+            return ldqxmlTxt;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             string txt_file = file + ldq_textBox1.Text;
