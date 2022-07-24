@@ -16,22 +16,18 @@ namespace open_file
     public partial class Form3 : Form
     {
         string xmlTxt;
-        string imagefile;
-        public Form3( string xmlTxt, string imagefile )
+        public Form3( string xmlTxt )
         {
             InitializeComponent();
             this.xmlTxt = xmlTxt;
-            this.imagefile = imagefile;
+
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlTxt);
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                if ( node.Name != "imgefile")
-                {
-                    string str = node.InnerText;
-                    this.listBox1.Items.Add(str);
-                }
+                string str = node.InnerText;
+                this.listBox1.Items.Add(str);
 
             }
 
@@ -83,20 +79,10 @@ namespace open_file
                     xmlElement.AppendChild(xmlElement1);
                 }
             }
-            if (imagefile != "")
-            {
-                XmlElement xmlElement2 = xmlDocument.CreateElement("imgefile");
-                xmlElement2.InnerText = imagefile;
-                xmlElement.AppendChild(xmlElement2);
-            }
             xmlDocument.Save(xmlTxt);
             Application.Restart();
             Process.GetCurrentProcess()?.Kill();
         }
 
-        private void Form3_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
