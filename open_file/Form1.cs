@@ -14,7 +14,7 @@ namespace open_file
         String xmlPath = "";
         String ComboBoxXml = "";
         String listBoxXml = "";
- 
+
         public Form1()
         {
             InitXmlPath();
@@ -126,12 +126,14 @@ namespace open_file
             /***************************************************/
            
         }
-
+        /*
+         ********* 打开文件 *****************
+         */
         private void button1_Click(object sender, EventArgs e)
         {
             string txt = SelectPath + textBox1.Text;
             txt = txt.Replace("/", "\\");
-
+      
             if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
             {
                 txt = txt.Remove(txt.Length - 2,2);
@@ -146,21 +148,58 @@ namespace open_file
                     listBox1.Items.Add(txt.Replace("/", @"\"));
                     listBox1.SelectedIndex = listBox1.Items.Count - 1;
                 }
-    
-            }else if (Directory.Exists(txt))
+
+            }
+            else
+            {
+                MessageBox.Show("打开失败！请检查该文件是否正确！！");
+            }
+
+        }
+
+        /*
+         ********* 打开路径 *****************
+         */
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string txt = SelectPath + textBox1.Text;
+            txt = txt.Replace("/", "\\");
+
+            if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
+            {
+                txt = txt.Remove(txt.Length - 2, 2);
+            }
+
+            if (File.Exists(txt))
+            {
+                txt = txt.Substring(0, txt.LastIndexOf("\\"));
+               
+                System.Diagnostics.Process.Start("Explorer.exe", txt);
+
+                if (!listBox1.Items.Contains(txt))
+                {
+                    listBox1.Items.Add(txt.Replace("/", @"\"));
+                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                }
+
+            }
+            else if (Directory.Exists(txt))
             {
                 System.Diagnostics.Process.Start("Explorer.exe", txt);
                 if (!listBox1.Items.Contains(txt))
                 {
                     listBox1.Items.Add(txt.Replace("/", @"\"));
+                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                   
                 }
             }
             else
             {
-                MessageBox.Show("打开失败！请检查该 文件名/路径 是否正确！！");
+                MessageBox.Show("打开失败！请检查该路径是否正确！！");
             }
-
         }
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -225,5 +264,16 @@ namespace open_file
                 MessageBox.Show("打开失败！请检查该 文件名/路径 是否正确！！");
             }
         }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+         
+            if (listBox1.Items.Count > 10)
+            {
+                listBox1.Items.RemoveAt(0);
+
+            }
+        }
+
     }
 }
