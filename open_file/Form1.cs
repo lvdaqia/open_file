@@ -14,14 +14,43 @@ namespace open_file
         String xmlPath = "";
         String ComboBoxXml = "";
         String listBoxXml = "";
-
+        String openFileWayXml = "";
+        String[] openFileALLWay = {"Notepad++.exe", "C:\\Program Files (x86)\\Source Insight 4.0\\sourceinsight4.exe" };
+        String openFileWay = "";
         public Form1()
         {
             InitXmlPath();
             InitializeComponent();
             InitComboBoxData();
             InitlistBoxData();
-    
+            InitOpenFileWay();
+        }
+
+        private void InitOpenFileWay()
+        {
+            openFileWayXml = xmlPath + "\\openFileWay.xml";
+            if (!File.Exists(openFileWayXml))
+            {
+                XmlDocument xml = new XmlDocument();
+                XmlElement xmlElement = xml.CreateElement("文件打开方式");
+                xml.AppendChild(xmlElement);
+                XmlElement xmlElement2 = xml.CreateElement("way1");
+                xmlElement2.InnerText = openFileALLWay[0];
+                xmlElement.AppendChild(xmlElement2);
+                xml.Save(openFileWayXml);
+            }
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(openFileWayXml);
+            XmlNode xmlNode = xmlDocument.DocumentElement;
+            openFileWay = xmlNode.ChildNodes[0].InnerText;
+            if (openFileWay == "Notepad++.exe")
+            {
+                button1.Text += "\n( Notepad++ )";
+            }
+            else
+            {
+                button1.Text += "\n( Source Insight4.0 )";
+            }
         }
 
         private void InitXmlPath()
@@ -129,32 +158,59 @@ namespace open_file
         /*
          ********* 打开文件 *****************
          */
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_MouseDown(object sender, MouseEventArgs e)
         {
-            string txt = SelectPath + textBox1.Text;
-            txt = txt.Replace("/", "\\");
-      
-            if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
+            if (e.Button == MouseButtons.Left)
             {
-                txt = txt.Remove(txt.Length - 2,2);
-            }
+                string txt = SelectPath + textBox1.Text;
+                txt = txt.Replace("/", "\\");
 
-            if (File.Exists(txt))
-            {
-                System.Diagnostics.Process.Start("Notepad++.exe", txt);
-
-                if( !listBox1.Items.Contains(txt))
+                if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
                 {
-                    listBox1.Items.Add(txt.Replace("/", @"\"));
-                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                    txt = txt.Remove(txt.Length - 2, 2);
                 }
 
-            }
-            else
-            {
-                MessageBox.Show("打开失败！请检查该文件是否正确！！");
-            }
+                if (File.Exists(txt))
+                {
+                    System.Diagnostics.Process.Start(openFileWay, txt);
+                    if (!listBox1.Items.Contains(txt))
+                    {
+                        listBox1.Items.Add(txt.Replace("/", @"\"));
+                        listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                    }
 
+                }
+                else
+                {
+                    MessageBox.Show("打开失败！请检查该文件是否正确！！");
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(openFileWayXml);
+                XmlNode xmlNode = xmlDocument.DocumentElement;
+                if (openFileWay.Equals(openFileALLWay[0]))
+                {
+                    openFileWay = openFileALLWay[1];
+                }
+                else
+                {
+                    openFileWay = openFileALLWay[0];
+                }
+                MessageBox.Show("默认打开方式已切换为："+openFileWay);
+                xmlNode.ChildNodes[0].InnerText = openFileWay;
+                xmlDocument.Save(openFileWayXml);
+                button1.Text = "打开文件";
+                if (openFileWay == "Notepad++.exe")
+                {
+                    button1.Text += "\n( Notepad++ )";
+                }
+                else
+                {
+                    button1.Text += "\n( Source Insight4.0 )";
+                }
+            }
         }
 
         /*
@@ -253,7 +309,7 @@ namespace open_file
 
             if (File.Exists(str))
             {
-                System.Diagnostics.Process.Start("Notepad++.exe", str);
+                System.Diagnostics.Process.Start(openFileWay, str);
             }
             else if (Directory.Exists(str))
             {
@@ -275,5 +331,6 @@ namespace open_file
             }
         }
 
+        
     }
 }

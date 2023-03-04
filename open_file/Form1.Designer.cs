@@ -42,19 +42,19 @@ namespace open_file
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(559, 157);
+            this.button1.Location = new System.Drawing.Point(491, 147);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(79, 48);
+            this.button1.Size = new System.Drawing.Size(149, 48);
             this.button1.TabIndex = 1;
             this.button1.Text = "打开文件";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
             // 
             // comboBox1
             // 
             this.comboBox1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 64);
+            this.comboBox1.Location = new System.Drawing.Point(12, 48);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(445, 29);
             this.comboBox1.TabIndex = 4;
@@ -62,9 +62,9 @@ namespace open_file
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(573, 64);
+            this.button4.Location = new System.Drawing.Point(491, 44);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(120, 33);
+            this.button4.Size = new System.Drawing.Size(149, 33);
             this.button4.TabIndex = 8;
             this.button4.Text = "路径管理";
             this.button4.UseVisualStyleBackColor = true;
@@ -86,16 +86,16 @@ namespace open_file
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(12, 135);
+            this.textBox1.Location = new System.Drawing.Point(12, 115);
             this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(517, 105);
+            this.textBox1.Size = new System.Drawing.Size(461, 105);
             this.textBox1.TabIndex = 12;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(662, 157);
+            this.button2.Location = new System.Drawing.Point(673, 147);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(79, 48);
             this.button2.TabIndex = 13;
