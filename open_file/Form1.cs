@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace open_file
 {
@@ -85,6 +86,8 @@ namespace open_file
                 xml.AppendChild(xmlElement);
                 XmlElement xmlElement2 = xml.CreateElement("path1");
                 xmlElement.AppendChild(xmlElement2);
+                XmlElement xmlElement3 = xml.CreateElement("SelectPath");
+                xmlElement.AppendChild(xmlElement3);
                 String current_path = System.Environment.CurrentDirectory + "\\";
                 xmlElement2.InnerText = current_path;
                 xml.Save(ComboBoxXml);
@@ -94,21 +97,36 @@ namespace open_file
             /***************************************************/
             /***************************************************/
             //读取 xml 文件的数据，并赋值给comboBox1
+            int i = 0;
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(ComboBoxXml);
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                string str = node.InnerText;
-                comboBox1.Items.Add(str);
+                if (!node.Name.Equals("SelectPath"))
+                {
+                    string str = node.InnerText;
+                    comboBox1.Items.Add(str);
+                }
+                else {
+                    SelectPath = node.InnerText.Trim();
+                }
+       
             }
             /***************************************************/
 
             /***************************************************/
             /***************************************************/
             //读取到的 第一条数据赋值给comboBox1显示；
-            comboBox1.SelectedIndex = 0;
-            SelectPath = comboBox1.GetItemText(comboBox1.Items[0]);
+            if (SelectPath == "")
+            {
+                comboBox1.SelectedIndex = 0;
+                SelectPath = comboBox1.GetItemText(comboBox1.Items[0]);
+            }
+            else {
+                comboBox1.SelectedIndex = comboBox1.Items.IndexOf(SelectPath);
+            }
+           
             /***************************************************/
         }
         public void InitlistBoxData()
@@ -260,12 +278,24 @@ namespace open_file
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectPath = comboBox1.GetItemText( comboBox1.Items[comboBox1.SelectedIndex] );
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(ComboBoxXml);
+            XmlNode xmlNode = xmlDocument.DocumentElement;
+            foreach (XmlNode node in xmlNode)
+            {
+                if (node.Name.Equals("SelectPath"))
+                {
+                    node.InnerText = SelectPath;
+                    break;
+                }
+            }
+            xmlDocument.Save(ComboBoxXml);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form3 form3 = new Form3( ComboBoxXml );
+            Form3 form3 = new Form3( ComboBoxXml,SelectPath );
             form3.StartPosition = FormStartPosition.CenterScreen;
             form3.Show();
         }

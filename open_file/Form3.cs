@@ -16,19 +16,22 @@ namespace open_file
     public partial class Form3 : Form
     {
         string xmlTxt;
-        public Form3( string xmlTxt )
+        string SelectPath;
+        public Form3( string xmlTxt,string SelectPath)
         {
             InitializeComponent();
             this.xmlTxt = xmlTxt;
-
+            this.SelectPath = SelectPath;
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlTxt);
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                string str = node.InnerText;
-                this.listBox1.Items.Add(str);
-
+                if (node.Name.Equals("SelectPath")) {
+                    string str = node.InnerText;
+                    this.listBox1.Items.Add(str);
+                }
+             
             }
 
            
@@ -69,6 +72,9 @@ namespace open_file
             XmlDocument xmlDocument = new XmlDocument();
             XmlElement xmlElement = xmlDocument.CreateElement("路径");
             xmlDocument.AppendChild(xmlElement);
+            XmlElement xmlElement2 = xmlDocument.CreateElement("SelectPath");
+            xmlElement2.InnerText = SelectPath;
+            xmlElement.AppendChild(xmlElement2);
             string[] all_path = new string[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
