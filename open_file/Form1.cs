@@ -295,9 +295,10 @@ namespace open_file
         private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form3 form3 = new Form3( ComboBoxXml,SelectPath );
-            form3.StartPosition = FormStartPosition.CenterScreen;
-            form3.Show();
+          
+            Form2 form2 = new Form2(ComboBoxXml, SelectPath);
+            form2.StartPosition = FormStartPosition.CenterScreen;
+            form2.ShowDialog();
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
