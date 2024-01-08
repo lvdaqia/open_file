@@ -16,6 +16,8 @@ namespace open_file
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            // 示例：禁用 Guna UI Framework 的自动检查更新
+
             Form1 form1 = new Form1();
             form1.StartPosition = FormStartPosition.CenterScreen;
             Application.Run(form1);

@@ -5,10 +5,14 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using MaterialSkin.Controls;
+using MaterialSkin;
+using System.Reflection.Emit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace open_file
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
         private String SelectPath;
 
@@ -97,7 +101,6 @@ namespace open_file
             /***************************************************/
             /***************************************************/
             //读取 xml 文件的数据，并赋值给comboBox1
-            int i = 0;
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(ComboBoxXml);
             XmlNode xmlNode = xmlDocument.DocumentElement;
@@ -167,8 +170,7 @@ namespace open_file
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
                 string str = node.InnerText;
-                this.listBox1.Items.Add(str);
-                
+                this.materialListBox1.AddItem(str);
             }
             /***************************************************/
            
@@ -180,7 +182,7 @@ namespace open_file
         {
             if (e.Button == MouseButtons.Left)
             {
-                string txt = SelectPath + textBox1.Text;
+                string txt = SelectPath + materialMultiLineTextBox1.Text;
                 txt = txt.Replace("/", "\\");
 
                 if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
@@ -191,12 +193,12 @@ namespace open_file
                 if (File.Exists(txt))
                 {
                     System.Diagnostics.Process.Start(openFileWay, txt);
-                    if (!listBox1.Items.Contains(txt))
+                    
+                    if (!IsTextInListBox(txt))
                     {
-                        listBox1.Items.Add(txt.Replace("/", @"\"));
-                        listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                        materialListBox1.AddItem(txt.Replace("/", @"\"));
+                        materialListBox1.SelectedIndex = materialListBox1.Items.Count - 1;
                     }
-
                 }
                 else
                 {
@@ -237,7 +239,7 @@ namespace open_file
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string txt = SelectPath + textBox1.Text;
+            string txt = SelectPath + materialMultiLineTextBox1.Text;
             txt = txt.Replace("/", "\\");
 
             if (txt.EndsWith("\n"))   //判断文本末尾是否存在换行，如果存在则删除
@@ -245,27 +247,16 @@ namespace open_file
                 txt = txt.Remove(txt.Length - 2, 2);
             }
 
-            if (File.Exists(txt))
+            if (File.Exists(txt) || Directory.Exists(txt))
             {
                 txt = txt.Substring(0, txt.LastIndexOf("\\"));
-               
+
                 System.Diagnostics.Process.Start("Explorer.exe", txt);
 
-                if (!listBox1.Items.Contains(txt))
-                {
-                    listBox1.Items.Add(txt.Replace("/", @"\"));
-                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
-                }
-
-            }
-            else if (Directory.Exists(txt))
-            {
-                System.Diagnostics.Process.Start("Explorer.exe", txt);
-                if (!listBox1.Items.Contains(txt))
-                {
-                    listBox1.Items.Add(txt.Replace("/", @"\"));
-                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
-                   
+            
+                if (!IsTextInListBox(txt)) { 
+                    materialListBox1.AddItem(txt.Replace("/", @"\"));
+                    materialListBox1.SelectedIndex = materialListBox1.Items.Count - 1;
                 }
             }
             else
@@ -294,11 +285,7 @@ namespace open_file
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Hide();
-          
-            Form2 form2 = new Form2(ComboBoxXml, SelectPath);
-            form2.StartPosition = FormStartPosition.CenterScreen;
-            form2.ShowDialog();
+            
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
@@ -316,13 +303,13 @@ namespace open_file
             XmlDocument xmlDocument = new XmlDocument();
             XmlElement xmlElement = xmlDocument.CreateElement("历史记录");
             xmlDocument.AppendChild(xmlElement);
-            string[] all_path = new string[listBox1.Items.Count];
-            for (int i = 0; i < listBox1.Items.Count; i++)
+           
+            for (int i = 0; i < materialListBox1.Items.Count; i++)
             {
-                if (listBox1.Items[i].ToString() != "")
+                if (materialListBox1.Items[i].Text != "")
                 {
                     XmlElement xmlElement1 = xmlDocument.CreateElement("his" + i);
-                    xmlElement1.InnerText = listBox1.Items[i].ToString();
+                    xmlElement1.InnerText = materialListBox1.Items[i].Text;
                     xmlElement.AppendChild(xmlElement1);
                 }
             }
@@ -330,14 +317,33 @@ namespace open_file
             xmlDocument.Save(listBoxXml);
         }
 
-        private void listBox1_DoubleClick(object sender, EventArgs e)
+
+
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex < 0)    //如果没有挑选中
+
+        }
+
+        private bool IsTextInListBox(string searchText)
+        {
+            // 遍历 MaterialListBox 中的项，检查是否包含指定的文本
+            foreach (MaterialListBoxItem item in materialListBox1.Items)
+            {
+                if (item.Text == searchText)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void materialListBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (materialListBox1.SelectedIndex < 0)    //如果没有挑选中
             {
                 return;
             }
-            string str = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
-
+            string str = materialListBox1.SelectedItem.Text;
             if (File.Exists(str))
             {
                 System.Diagnostics.Process.Start(openFileWay, str);
@@ -352,16 +358,30 @@ namespace open_file
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void materialListBox1_SelectedIndexChanged(object sender, MaterialListBoxItem selectedItem)
         {
-         
-            if (listBox1.Items.Count > 10)
+            if (materialListBox1.Items.Count > 10)
             {
-                listBox1.Items.RemoveAt(0);
-
+                materialListBox1.Items.RemoveAt(0);
             }
         }
 
-        
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            Form2 form2 = new Form2(ComboBoxXml, SelectPath);
+            form2.StartPosition = FormStartPosition.CenterScreen;
+            form2.ShowDialog();
+        }
+
+        private void materialListBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (materialListBox1.SelectedItem != null)
+            {
+                ToolTip toolTip = new ToolTip();
+                toolTip.Show(materialListBox1.SelectedItem.Text, materialListBox1, 5000); // 显示 5 秒
+            }
+        }
     }
 }

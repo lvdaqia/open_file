@@ -113,7 +113,7 @@ namespace open_file
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 515);
+            this.ClientSize = new System.Drawing.Size(528, 515);
             this.Controls.Add(this.materialListBox1);
             this.Controls.Add(this.materialTextBox1);
             this.Controls.Add(this.materialButton2);
