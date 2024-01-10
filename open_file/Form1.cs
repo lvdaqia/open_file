@@ -283,10 +283,6 @@ namespace open_file
             xmlDocument.Save(ComboBoxXml);
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
@@ -315,13 +311,6 @@ namespace open_file
             }
            
             xmlDocument.Save(listBoxXml);
-        }
-
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private bool IsTextInListBox(string searchText)
@@ -381,6 +370,15 @@ namespace open_file
             {
                 ToolTip toolTip = new ToolTip();
                 toolTip.Show(materialListBox1.SelectedItem.Text, materialListBox1, 5000); // 显示 5 秒
+            }
+        }
+
+        private void materialMultiLineTextBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // 右键点击时，模拟粘贴操作
+                materialMultiLineTextBox1.Paste();
             }
         }
     }

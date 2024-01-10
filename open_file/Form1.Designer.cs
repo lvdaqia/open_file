@@ -41,20 +41,19 @@ namespace open_file
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(491, 147);
+            this.button1.Location = new System.Drawing.Point(500, 157);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(149, 48);
             this.button1.TabIndex = 1;
             this.button1.Text = "打开文件";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
             // 
             // comboBox1
             // 
             this.comboBox1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 84);
+            this.comboBox1.Location = new System.Drawing.Point(21, 84);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(445, 29);
             this.comboBox1.TabIndex = 4;
@@ -62,7 +61,7 @@ namespace open_file
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(673, 147);
+            this.button2.Location = new System.Drawing.Point(682, 157);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(79, 48);
             this.button2.TabIndex = 13;
@@ -77,12 +76,13 @@ namespace open_file
             this.materialMultiLineTextBox1.Depth = 0;
             this.materialMultiLineTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.materialMultiLineTextBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialMultiLineTextBox1.Location = new System.Drawing.Point(12, 147);
+            this.materialMultiLineTextBox1.Location = new System.Drawing.Point(21, 147);
             this.materialMultiLineTextBox1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox1.Name = "materialMultiLineTextBox1";
             this.materialMultiLineTextBox1.Size = new System.Drawing.Size(445, 58);
             this.materialMultiLineTextBox1.TabIndex = 15;
             this.materialMultiLineTextBox1.Text = "";
+            this.materialMultiLineTextBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.materialMultiLineTextBox1_MouseDown);
             // 
             // materialListBox1
             // 
@@ -90,7 +90,7 @@ namespace open_file
             this.materialListBox1.BorderColor = System.Drawing.Color.LightGray;
             this.materialListBox1.Depth = 0;
             this.materialListBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialListBox1.Location = new System.Drawing.Point(12, 247);
+            this.materialListBox1.Location = new System.Drawing.Point(21, 251);
             this.materialListBox1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialListBox1.Name = "materialListBox1";
             this.materialListBox1.SelectedIndex = -1;
@@ -100,7 +100,6 @@ namespace open_file
             this.materialListBox1.SelectedIndexChanged += new MaterialSkin.Controls.MaterialListBox.SelectedIndexChangedEventHandler(this.materialListBox1_SelectedIndexChanged);
             this.materialListBox1.DoubleClick += new System.EventHandler(this.materialListBox1_DoubleClick);
             this.materialListBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.materialListBox1_MouseClick);
-        
             // 
             // materialButton1
             // 
@@ -111,7 +110,7 @@ namespace open_file
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(491, 84);
+            this.materialButton1.Location = new System.Drawing.Point(500, 84);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton1.Name = "materialButton1";
@@ -129,7 +128,7 @@ namespace open_file
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(778, 521);
+            this.ClientSize = new System.Drawing.Size(784, 521);
             this.Controls.Add(this.materialButton1);
             this.Controls.Add(this.materialMultiLineTextBox1);
             this.Controls.Add(this.materialListBox1);
