@@ -59,27 +59,7 @@ namespace open_file
 
         private void materialButton2_Click(object sender, EventArgs e)
         {
-            if (!materialTextBox1.Text.EndsWith("\\"))
-            {
-                materialTextBox1.Text += "\\";
-            }
-
-            if (Directory.Exists(materialTextBox1.Text))
-            {
-
-                if (IsTextInListBox(materialTextBox1.Text))
-                {
-                    MessageBox.Show("文件路径已存在！");
-                }
-                else
-                {        
-                    materialListBox1.AddItem(materialTextBox1.Text);
-                }
-            }
-            else
-            {
-                MessageBox.Show("文件路径错误！");
-            }
+            
         }
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
