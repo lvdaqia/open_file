@@ -29,6 +29,7 @@ namespace open_file
         public Form1()
         {
             InitializeComponent();
+           
             InitXmlPath();  // 创建存放 xml 的路径
             InitComboBoxData();
             InitlistBoxData();
@@ -352,6 +353,10 @@ namespace open_file
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
+            if (materialListBox2.SelectedItem == null)
+            {
+                return;
+            }
             materialListBox2.Items.Remove(materialListBox2.SelectedItem);
          
             foreach (var item in materialComboBox1.Items.Cast<object>().ToList())
@@ -366,24 +371,24 @@ namespace open_file
 
         private void materialButton2_Click(object sender, EventArgs e)
         {
-            if (materialMultiLineTextBox2.Text == "")
+            if (AddPath_TextBox.Text == "")
                 return;
-            if (!materialMultiLineTextBox2.Text.EndsWith("\\"))
+            if (!AddPath_TextBox.Text.EndsWith("\\"))
             {
-                materialMultiLineTextBox2.Text += "\\";
+                AddPath_TextBox.Text += "\\";
             }
 
-            if (Directory.Exists(materialMultiLineTextBox2.Text))
+            if (Directory.Exists(AddPath_TextBox.Text))
             {
 
-                if (IsTextInListBox(materialMultiLineTextBox2.Text))
+                if (IsTextInListBox(AddPath_TextBox.Text))
                 {
                     MessageBox.Show("文件路径已存在！");
                 }
                 else
                 {
-                    materialListBox2.AddItem(materialMultiLineTextBox2.Text);
-                    materialComboBox1.Items.Add(materialMultiLineTextBox2.Text);
+                    materialListBox2.AddItem(AddPath_TextBox.Text);
+                    materialComboBox1.Items.Add(AddPath_TextBox.Text);
                 }
             }
             else
