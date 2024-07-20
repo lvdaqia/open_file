@@ -81,6 +81,7 @@ namespace open_file
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(762, 174);
             this.listBox1.TabIndex = 11;
+            this.listBox1.Click += new System.EventHandler(this.listBox1_Click);
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 

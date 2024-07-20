@@ -361,6 +361,14 @@ namespace open_file
             }
         }
 
-        
+        private void listBox1_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex < 0)    //如果没有挑选中
+            {
+                return;
+            }
+            string str = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
+            textBox1.Text = str;    
+        }
     }
 }
