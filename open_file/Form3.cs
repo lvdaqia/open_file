@@ -27,7 +27,7 @@ namespace open_file
             XmlNode xmlNode = xmlDocument.DocumentElement;
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-                if (node.Name.Equals("SelectPath")) {
+                if (node.Name.Contains("path")) {
                     string str = node.InnerText;
                     this.listBox1.Items.Add(str);
                 }
