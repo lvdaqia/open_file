@@ -88,8 +88,7 @@ namespace open_file
                 xmlElement.AppendChild(xmlElement2);
                 XmlElement xmlElement3 = xml.CreateElement("SelectPath");
                 xmlElement.AppendChild(xmlElement3);
-                String current_path = System.Environment.CurrentDirectory + "\\";
-                xmlElement2.InnerText = current_path;
+            
                 xml.Save(ComboBoxXml);
             }
             /***************************************************/
@@ -278,6 +277,42 @@ namespace open_file
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectPath = comboBox1.GetItemText( comboBox1.Items[comboBox1.SelectedIndex] );
+            // 指定要遍历的根目录路径  
+            try
+            {
+                // 实例化DirectoryInfo对象  
+                DirectoryInfo dirInfo = new DirectoryInfo(SelectPath);
+
+                // 检查目录是否存在  
+                if (!dirInfo.Exists)
+                {
+                    MessageBox.Show("目录不存在: " + SelectPath);
+                    return;
+                }
+
+                // 获取并遍历目录下的所有直接子目录  
+                DirectoryInfo[] subDirs = dirInfo.GetDirectories();
+                comboBox2.Items.Clear();
+                comboBox2.Items.Add("无");
+                foreach (DirectoryInfo subDir in subDirs)
+                {
+                    // 输出每个子目录的名称  
+                    //MessageBox.Show(subDir.Name);
+                    comboBox2.Items.Add(subDir.Name);
+                    // 如果你需要完整路径，可以使用 subDir.FullName  
+                }
+
+                // 如果目录为空，则输出提示  
+                if (subDirs.Length == 0)
+                {
+                    MessageBox.Show("目录为空，没有子目录。");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 处理可能出现的异常，如权限不足、路径不存在等  
+                MessageBox.Show("遍历目录时发生错误: " + ex.Message);
+            }
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(ComboBoxXml);
             XmlNode xmlNode = xmlDocument.DocumentElement;
@@ -370,5 +405,7 @@ namespace open_file
             string str = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
             textBox1.Text = str;    
         }
+
+     
     }
 }
