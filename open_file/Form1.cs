@@ -368,7 +368,15 @@ namespace open_file
                 return;
             }
             string str = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
-            textBox1.Text = str;    
+            if (str.Contains(SelectPath))
+            {
+                textBox1.Text = str.Substring(SelectPath.Length);
+            }
+            else {
+                MessageBox.Show("无法识别！");
+            }
+             
         }
+
     }
 }
