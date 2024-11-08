@@ -33,14 +33,16 @@ namespace open_file
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 206);
+            this.ClientSize = new System.Drawing.Size(1075, 739);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form2";
             this.Text = "Form2";
             this.ResumeLayout(false);
 
         }
+
 
         #endregion
     }

@@ -117,15 +117,11 @@ namespace open_file
 
             /***************************************************/
             /***************************************************/
-            //读取到的 第一条数据赋值给comboBox1显示；
-            if (SelectPath == "")
+            if (SelectPath != "")
             {
-                comboBox1.SelectedIndex = 0;
-                SelectPath = comboBox1.GetItemText(comboBox1.Items[0]);
-            }
-            else {
                 comboBox1.SelectedIndex = comboBox1.Items.IndexOf(SelectPath);
             }
+           
            
             /***************************************************/
         }
@@ -216,7 +212,7 @@ namespace open_file
                 {
                     openFileWay = openFileALLWay[0];
                 }
-                MessageBox.Show("默认打开方式已切换为："+openFileWay);
+                //MessageBox.Show("默认打开方式已切换为："+openFileWay);
                 xmlNode.ChildNodes[0].InnerText = openFileWay;
                 xmlDocument.Save(openFileWayXml);
                 button1.Text = "打开文件";
