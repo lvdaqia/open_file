@@ -18,6 +18,11 @@ namespace open_file
         String openFileWayXml = "";
         String[] openFileALLWay = {"Notepad++.exe", "C:\\Program Files (x86)\\Source Insight 4.0\\sourceinsight4.exe" };
         String openFileWay = "";
+        private int defaultWidth = 806;
+        private int defaultHeight = 497;
+        private int defaultLeft = 557;
+        private int defaultTop = 271;
+
         public Form1()
         {
             InitXmlPath();
@@ -176,6 +181,11 @@ namespace open_file
         {
             if (e.Button == MouseButtons.Left)
             {
+                if ( textBox1.Text.Equals("ldq") ) { 
+                    RestoreDefaultWindowSettings();
+                    textBox1.Text="";
+                    return;
+                }
                 string txt = SelectPath + textBox1.Text;
                 txt = txt.Replace("/", "\\");
 
@@ -372,6 +382,33 @@ namespace open_file
                 MessageBox.Show("无法识别！");
             }
              
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.FormWidth = this.Width;
+            Properties.Settings.Default.FormHeight = this.Height;
+            Properties.Settings.Default.FormLeft = this.Left;
+            Properties.Settings.Default.FormTop = this.Top;
+            Properties.Settings.Default.Save();
+            
+           
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Width = Properties.Settings.Default.FormWidth;
+            this.Height = Properties.Settings.Default.FormHeight;
+            this.Left = Properties.Settings.Default.FormLeft;
+            this.Top = Properties.Settings.Default.FormTop;
+
+        }
+        public void RestoreDefaultWindowSettings()
+        {
+            this.Width = defaultWidth;
+            this.Height = defaultHeight;
+            this.Left = defaultLeft;
+            this.Top = defaultTop;
         }
 
     }
