@@ -62,10 +62,10 @@ namespace open_file
 
         private void InitXmlPath()
         {
-            xmlPath = Path.Combine(@"C:\Users", Environment.UserName, "XmlData"); 
+            xmlPath = Path.Combine(@"C:\Users", Environment.UserName, "XmlData");
             //xmlPath = xmlPath.Replace("/", "\\");
             //xmlPath = xmlPath.Substring(0, xmlPath.LastIndexOf("\\"));
-            //xmlPath = xmlPath + "\\XmlData";
+            //xmlPath = xmlPath + "\\XmlData"
             if (!Directory.Exists(xmlPath))
             {
                 Directory.CreateDirectory(xmlPath);
@@ -94,8 +94,6 @@ namespace open_file
                 xmlElement.AppendChild(xmlElement2);
                 XmlElement xmlElement3 = xml.CreateElement("SelectPath");
                 xmlElement.AppendChild(xmlElement3);
-                String current_path = System.Environment.CurrentDirectory + "\\";
-                xmlElement2.InnerText = current_path;
                 xml.Save(ComboBoxXml);
             }
             /***************************************************/
@@ -103,7 +101,6 @@ namespace open_file
             /***************************************************/
             /***************************************************/
             //读取 xml 文件的数据，并赋值给comboBox1
-            int i = 0;
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(ComboBoxXml);
             XmlNode xmlNode = xmlDocument.DocumentElement;
@@ -128,26 +125,13 @@ namespace open_file
                 comboBox1.SelectedIndex = comboBox1.Items.IndexOf(SelectPath);
             }
            
-           
             /***************************************************/
         }
         public void InitlistBoxData()
         {
-            /***************************************************/
-            /***************************************************/
-            //获取到保存 Data的xml文件
-            string xmlPath = System.Environment.CurrentDirectory;
-            xmlPath = xmlPath.Replace("/", "\\");
-            xmlPath = xmlPath.Substring(0, xmlPath.LastIndexOf("\\"));
-            xmlPath = xmlPath + "\\XmlData";
-            if (!Directory.Exists(xmlPath))
-            {
-                Directory.CreateDirectory(xmlPath);
-            }
+           
             listBoxXml = xmlPath + "\\listBox.xml";
             /***************************************************/
-
-
             /***************************************************/
             /***************************************************/
             //如果xml文件不存在，则创建该xml
