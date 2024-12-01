@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace open_file
 {
@@ -61,10 +62,10 @@ namespace open_file
 
         private void InitXmlPath()
         {
-            xmlPath = System.Environment.CurrentDirectory;
-            xmlPath = xmlPath.Replace("/", "\\");
-            xmlPath = xmlPath.Substring(0, xmlPath.LastIndexOf("\\"));
-            xmlPath = xmlPath + "\\XmlData";
+            xmlPath = Path.Combine(@"C:\Users", Environment.UserName, "XmlData"); 
+            //xmlPath = xmlPath.Replace("/", "\\");
+            //xmlPath = xmlPath.Substring(0, xmlPath.LastIndexOf("\\"));
+            //xmlPath = xmlPath + "\\XmlData";
             if (!Directory.Exists(xmlPath))
             {
                 Directory.CreateDirectory(xmlPath);
