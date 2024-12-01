@@ -115,12 +115,13 @@ namespace open_file
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(1221, 872);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Location = new System.Drawing.Point(1025, 914);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(323, 62);
+            this.label1.Size = new System.Drawing.Size(519, 31);
             this.label1.TabIndex = 14;
-            this.label1.Text = "Author: lvdaqian\nEmail: 470751984@qq.com";
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            this.label1.Text = "Author: lvdaqian Email: 470751984@qq.com";
             // 
             // Form1
             // 
@@ -136,6 +137,7 @@ namespace open_file
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
