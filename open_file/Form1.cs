@@ -23,7 +23,7 @@ namespace open_file
         private int defaultHeight = 497;
         private int defaultLeft = 557;
         private int defaultTop = 271;
-
+        private int maxItems = 20;
         public Form1()
         {
             InitXmlPath();
@@ -345,7 +345,7 @@ namespace open_file
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
          
-            if (listBox1.Items.Count > 10)
+            if (listBox1.Items.Count > maxItems)
             {
                 listBox1.Items.RemoveAt(0);
 
@@ -382,11 +382,12 @@ namespace open_file
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             this.Width = Properties.Settings.Default.FormWidth;
             this.Height = Properties.Settings.Default.FormHeight;
             this.Left = Properties.Settings.Default.FormLeft;
             this.Top = Properties.Settings.Default.FormTop;
-
+            
         }
         public void RestoreDefaultWindowSettings()
         {
