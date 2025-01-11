@@ -382,13 +382,15 @@ namespace open_file
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
             this.Width = Properties.Settings.Default.FormWidth;
             this.Height = Properties.Settings.Default.FormHeight;
             this.Left = Properties.Settings.Default.FormLeft;
             this.Top = Properties.Settings.Default.FormTop;
-            
+            if ( this.Width <= 0 || this.Height <= 0 || this.Left <= 0 || this.Top <= 0 ) {
+                RestoreDefaultWindowSettings();
+            }
         }
+
         public void RestoreDefaultWindowSettings()
         {
             this.Width = defaultWidth;
