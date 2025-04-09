@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace open_file
@@ -399,5 +400,42 @@ namespace open_file
             this.Top = defaultTop;
         }
 
+        private bool IsApkFile(string filePath)
+        {
+            return File.Exists(filePath) &&
+                   Path.GetExtension(filePath).Equals(".apk", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void textBox2_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // 只允许单个APK文件
+                if (files.Length == 1 && IsApkFile(files[0]))
+                {
+                    e.Effect = DragDropEffects.Copy;
+                    return;
+                }
+            }
+            e.Effect = DragDropEffects.None;
+        }
+
+        private void textBox2_DragDrop(object sender, DragEventArgs e)
+        {
+            // 获取拖放的文件路径
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 0 && IsApkFile(files[0]))
+            {
+                textBox2.Text = $"{files[0]}{Environment.NewLine}";
+                new Form2(textBox2.Text.Replace("/", "\\")).Show();
+            }
+            else
+            {
+                textBox2.Text = "请拖放有效的APK文件(.apk)";
+            }
+        }
     }
 }
