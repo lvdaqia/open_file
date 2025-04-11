@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml;
 using AndroidXml;
 using SharpCompress.Archives;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace open_file
@@ -44,7 +45,6 @@ namespace open_file
             {
                 // 取消只读属性
                 File.SetAttributes(myapk, fileAttributes & ~FileAttributes.ReadOnly);
-                MessageBox.Show("文件是只读的，已取消只读属性。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             var apkInfo = ParseApk(myapk);
@@ -270,6 +270,8 @@ namespace open_file
 
             try
             {
+                List<string> extractedSoPaths = new List<string>();
+
                 using (System.IO.Compression.ZipArchive archive = ZipFile.OpenRead(apkPath))
                 {
                     foreach (var entry in archive.Entries)
@@ -282,17 +284,25 @@ namespace open_file
                             {
                                 Directory.CreateDirectory(dir);
                             }
+
                             entry.ExtractToFile(destPath, true);
+                            extractedSoPaths.Add(destPath); // 记录路径
                         }
                     }
                 }
+
+                // 输出到文本文件
+                string logPath = Path.Combine(outputDir, "so_files_list.txt");
+                File.WriteAllLines(logPath, extractedSoPaths, Encoding.UTF8);
+
                 // 提取完毕后自动打开文件夹
                 Process.Start("explorer.exe", outputDir);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("提取失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("提取 .so 文件失败：" + ex.Message);
             }
+
         }
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
@@ -369,12 +379,13 @@ namespace open_file
                         if (!Directory.Exists(baseOutputDir))
                             Directory.CreateDirectory(baseOutputDir);
 
-                        string outputPath = Path.Combine(baseOutputDir, $"{apkFileName}.manifest.txt");
+                        string outputPath = Path.Combine(baseOutputDir, $"{apkFileName}_manifest.txt");
 
                         // 写入文件
                         File.WriteAllText(outputPath, manifestXmlContent.ToString(), Encoding.UTF8);
 
-                        MessageBox.Show($"Manifest 导出成功：{outputPath}", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        System.Diagnostics.Process.Start("Notepad++.exe",outputPath);
+                        //MessageBox.Show($"Manifest 导出成功：{outputPath}", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
