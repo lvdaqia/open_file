@@ -141,6 +141,7 @@ namespace open_file
             this.button2.TabIndex = 11;
             this.button2.Text = "更多信息";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form2
             // 
@@ -161,6 +162,7 @@ namespace open_file
             this.Controls.Add(this.textTargetSdk);
             this.Name = "Form2";
             this.Text = "App 信息查看器";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form2_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

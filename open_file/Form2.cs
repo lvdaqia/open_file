@@ -5,10 +5,12 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using AndroidXml;
 using SharpCompress.Archives;
+
 
 namespace open_file
 {
@@ -25,20 +27,35 @@ namespace open_file
             public string TargetSdkVersion { get; set; }
         }
 
-        private string myApk;
+        private string myapk;
+      
         public Form2(string apkPath)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
             apkPath = ValidatePath(apkPath);
-            this.myApk = apkPath;
-            var apkInfo = ParseApk(apkPath,false);
+            this.myapk = apkPath;
+
+            // 获取文件的属性
+            var fileAttributes = File.GetAttributes(myapk);
+
+            // 如果文件是只读的，取消只读属性
+            if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                // 取消只读属性
+                File.SetAttributes(myapk, fileAttributes & ~FileAttributes.ReadOnly);
+                MessageBox.Show("文件是只读的，已取消只读属性。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            var apkInfo = ParseApk(myapk);
 
             textPackageName.Text = apkInfo.PackageName;
             textMainActivity.Text = apkInfo.MainActivity;
             textVersionName.Text = apkInfo.VersionName;
             textMinSdk.Text = apkInfo.MinSdkVersion;
             textTargetSdk.Text = apkInfo.TargetSdkVersion;
+
+           
         }
 
         private string ValidatePath(string path)
@@ -52,44 +69,47 @@ namespace open_file
             return path;
         }
 
-        private ApkInfo ParseApk(string apkPath,Boolean allInfo)
+        private ApkInfo ParseApk(string apkPath)
         {
             var info = new ApkInfo();
 
-            using (var fileStream = new FileStream(apkPath, FileMode.Open))
-            using (var zipReader = ArchiveFactory.Open(fileStream))
+            try
             {
-                var manifestEntry = zipReader.Entries.FirstOrDefault(w =>
-                    w.Key.Equals("AndroidManifest.xml", StringComparison.OrdinalIgnoreCase));
-
-                if (manifestEntry == null) return info;
-
-                using (var memoryStream = new MemoryStream())
+                using (var fileStream = new FileStream(apkPath, FileMode.Open))
+                using (var zipReader = ArchiveFactory.Open(fileStream))
                 {
-                    using (var entryStream = manifestEntry.OpenEntryStream())
-                    {
-                        entryStream.CopyTo(memoryStream);
-                    }
-                    memoryStream.Position = 0;
+                    var manifestEntry = zipReader.Entries.FirstOrDefault(w =>
+                        w.Key.Equals("AndroidManifest.xml", StringComparison.OrdinalIgnoreCase));
 
-                    using (var reader = new AndroidXmlReader(memoryStream))
+                    if (manifestEntry == null) return info;
+
+                    using (var memoryStream = new MemoryStream())
                     {
-                        bool inApplication = false;
-                        if (!allInfo)
+                        using (var entryStream = manifestEntry.OpenEntryStream())
                         {
+                            entryStream.CopyTo(memoryStream);
+                        }
+                        memoryStream.Position = 0;
+
+                        using (var reader = new AndroidXmlReader(memoryStream))
+                        {
+                            bool inApplication = false;
+                            bool inActivity = false;
+                            bool inIntentFilter = false;
+
+                            string currentActivityName = null;
+                            bool foundMainAction = false;
+                            bool foundLauncherCategory = false;
+
                             while (reader.Read())
                             {
-
                                 if (reader.NodeType == XmlNodeType.Element)
                                 {
-                                    Log.Write("结点", reader.Name);
-                                    // 解析manifest节点
                                     if (reader.Name == "manifest")
                                     {
                                         for (int i = 0; i < reader.AttributeCount; i++)
                                         {
                                             reader.MoveToAttribute(i);
-                                            Log.Write("manifest", reader.Name);
                                             switch (reader.Name)
                                             {
                                                 case "package":
@@ -104,14 +124,11 @@ namespace open_file
                                             }
                                         }
                                     }
-                                    // 解析uses-sdk节点
                                     else if (reader.Name == "uses-sdk")
                                     {
-
                                         for (int i = 0; i < reader.AttributeCount; i++)
                                         {
                                             reader.MoveToAttribute(i);
-                                            Log.Write("uses-sdk", reader.Name);
                                             switch (reader.Name)
                                             {
                                                 case "android:minSdkVersion":
@@ -123,133 +140,114 @@ namespace open_file
                                             }
                                         }
                                     }
-                                    // 解析权限
                                     else if (reader.Name == "uses-permission")
                                     {
                                         for (int i = 0; i < reader.AttributeCount; i++)
                                         {
                                             reader.MoveToAttribute(i);
-                                            Log.Write("uses-permission", reader.Name);
                                             if (reader.Name == "android:name")
                                             {
                                                 info.Permissions.Add(reader.Value);
                                             }
                                         }
                                     }
-                                    // 解析application节点
                                     else if (reader.Name == "application")
                                     {
                                         inApplication = true;
                                     }
-                                    // 解析主Activity
-                                    else if (inApplication && reader.Name == "activity")
+                                    else if (inApplication && (reader.Name == "activity" || reader.Name == "activity-alias"))
                                     {
-                                        string activityName = null;
-                                        bool isMain = false;
+                                        inActivity = true;
+                                        currentActivityName = null;
 
                                         for (int i = 0; i < reader.AttributeCount; i++)
                                         {
                                             reader.MoveToAttribute(i);
-                                            Log.Write("activity", reader.Name);
                                             if (reader.Name == "android:name")
                                             {
-                                                activityName = reader.Value;
-                                                info.MainActivity = activityName;
-                                            }
-                                            else if (reader.Name == "android:exported" && reader.Value == "true")
-                                            {
-                                                isMain = true;
-                                            }
-
-                                            if (isMain && !string.IsNullOrEmpty(activityName))
-                                            {
-                                                // 转换相对类名为全限定名
-                                                if (activityName.StartsWith("."))
-                                                {
-                                                    info.MainActivity = info.PackageName + activityName;
-                                                }
-                                                else if (!activityName.Contains("."))
-                                                {
-                                                    info.MainActivity = info.PackageName + "." + activityName;
-                                                }
-                                                else
-                                                {
-                                                    info.MainActivity = activityName;
-                                                }
+                                                currentActivityName = reader.Value;
                                             }
                                         }
-
                                     }
-                                }
-                                else if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "application")
-                                {
-                                    inApplication = false;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            int indentLevel = 0;
-                            StringBuilder indent = new StringBuilder();
-
-                            while (reader.Read())
-                            {
-                                // 处理缩进
-                                if (reader.NodeType == XmlNodeType.EndElement)
-                                {
-                                    indentLevel--;
-                                }
-
-                                indent.Clear();
-                                for (int i = 0; i < indentLevel; i++) indent.Append("  ");
-
-                                // 打印节点信息
-                                switch (reader.NodeType)
-                                {
-                                    case XmlNodeType.Element:
-                                        Log.Write("Element", $"{indent}<{reader.Name}>");
-                                        indentLevel++;
-
-                                        // 打印属性
+                                    else if (inActivity && reader.Name == "intent-filter")
+                                    {
+                                        inIntentFilter = true;
+                                        foundMainAction = false;
+                                        foundLauncherCategory = false;
+                                    }
+                                    else if (inIntentFilter && reader.Name == "action")
+                                    {
                                         for (int i = 0; i < reader.AttributeCount; i++)
                                         {
                                             reader.MoveToAttribute(i);
-                                            Log.Write("Attribute", $"{indent}  {reader.Name}=\"{reader.Value}\"");
+                                            if (reader.Name == "android:name" && reader.Value == "android.intent.action.MAIN")
+                                            {
+                                                foundMainAction = true;
+                                            }
                                         }
-                                        break;
+                                    }
+                                    else if (inIntentFilter && reader.Name == "category")
+                                    {
+                                        for (int i = 0; i < reader.AttributeCount; i++)
+                                        {
+                                            reader.MoveToAttribute(i);
+                                            if (reader.Name == "android:name" && reader.Value == "android.intent.category.LAUNCHER")
+                                            {
+                                                foundLauncherCategory = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (reader.NodeType == XmlNodeType.EndElement)
+                                {
+                                    if (reader.Name == "intent-filter")
+                                    {
+                                        inIntentFilter = false;
 
-                                    case XmlNodeType.EndElement:
-                                        Log.Write("Element", $"{indent}</{reader.Name}>");
-                                        break;
-
-                                    case XmlNodeType.Text:
-                                        Log.Write("Text", $"{indent}{reader.Value}");
-                                        break;
-
-                                    case XmlNodeType.Comment:
-                                        Log.Write("Comment", $"{indent}<!--{reader.Value}-->");
-                                        break;
-
-                                    case XmlNodeType.XmlDeclaration:
-                                        Log.Write("Declaration", $"<?xml {reader.Value}?>");
-                                        break;
-
-                                    default:
-                                        Log.Write(reader.NodeType.ToString(), reader.Value);
-                                        break;
+                                        if (foundMainAction && foundLauncherCategory && !string.IsNullOrEmpty(currentActivityName))
+                                        {
+                                            if (currentActivityName.StartsWith("."))
+                                            {
+                                                info.MainActivity = info.PackageName + currentActivityName;
+                                            }
+                                            else if (!currentActivityName.Contains("."))
+                                            {
+                                                info.MainActivity = info.PackageName + "." + currentActivityName;
+                                            }
+                                            else
+                                            {
+                                                info.MainActivity = currentActivityName;
+                                            }
+                                        }
+                                    }
+                                    else if (reader.Name == "activity" || reader.Name == "activity-alias")
+                                    {
+                                        inActivity = false;
+                                        currentActivityName = null;
+                                    }
+                                    else if (reader.Name == "application")
+                                    {
+                                        inApplication = false;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"解析 APK 失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             return info;
         }
 
+
+
         private void button1_Click(object sender, EventArgs e)
         {
-            string apkPath = myApk;
+            string apkPath = myapk;
 
             if (!File.Exists(apkPath))
             {
@@ -296,6 +294,97 @@ namespace open_file
                 MessageBox.Show("提取失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ExportAndroidManifest(myapk);
+        }
+
+        private void ExportAndroidManifest(string apkPath)
+        {
+            try
+            {
+                using (var fileStream = new FileStream(apkPath, FileMode.Open, FileAccess.Read))
+                using (var zipReader = ArchiveFactory.Open(fileStream))
+                {
+                    var manifestEntry = zipReader.Entries.FirstOrDefault(e =>
+                        e.Key.Equals("AndroidManifest.xml", StringComparison.OrdinalIgnoreCase));
+
+                    if (manifestEntry == null)
+                    {
+                        MessageBox.Show("APK 中未找到 AndroidManifest.xml", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    // 使用内存流缓存读取内容
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        using (var entryStream = manifestEntry.OpenEntryStream())
+                        {
+                            entryStream.CopyTo(memoryStream);
+                        }
+                        memoryStream.Position = 0;
+
+                        // 使用 StringWriter 和 XmlWriter 创建格式化的输出
+                        var manifestXmlContent = new StringBuilder();
+                        using (var stringWriter = new StringWriter(manifestXmlContent))
+                        using (var xmlWriter = new XmlTextWriter(stringWriter)
+                        {
+                            Formatting = Formatting.Indented,  // 启用缩进
+                            Indentation = 4                    // 每级缩进 4 个空格
+                        })
+                        {
+                            xmlWriter.WriteStartDocument();
+                            using (var reader = new AndroidXmlReader(memoryStream))
+                            {
+                                while (reader.Read())
+                                {
+                                    if (reader.NodeType == XmlNodeType.Element)
+                                    {
+                                        xmlWriter.WriteStartElement(reader.Name);
+                                        for (int i = 0; i < reader.AttributeCount; i++)
+                                        {
+                                            reader.MoveToAttribute(i);
+                                            xmlWriter.WriteAttributeString(reader.Name, reader.Value);
+                                        }
+                                    }
+                                    else if (reader.NodeType == XmlNodeType.EndElement)
+                                    {
+                                        xmlWriter.WriteEndElement();
+                                    }
+                                }
+                            }
+                            xmlWriter.WriteEndDocument();
+                        }
+
+                        // 输出路径
+                        string apkFileName = Path.GetFileNameWithoutExtension(apkPath);
+                        string baseOutputDir = Path.Combine(@"C:\Users", Environment.UserName, "XmlData");
+
+                        if (!Directory.Exists(baseOutputDir))
+                            Directory.CreateDirectory(baseOutputDir);
+
+                        string outputPath = Path.Combine(baseOutputDir, $"{apkFileName}.manifest.txt");
+
+                        // 写入文件
+                        File.WriteAllText(outputPath, manifestXmlContent.ToString(), Encoding.UTF8);
+
+                        MessageBox.Show($"Manifest 导出成功：{outputPath}", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"导出 Manifest 失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
 
     }
 }
