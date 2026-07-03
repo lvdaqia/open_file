@@ -20,10 +20,6 @@ namespace open_file
         String openFileWayXml = "";
         String[] openFileALLWay = {"Notepad++.exe", "C:\\Program Files (x86)\\Source Insight 4.0\\sourceinsight4.exe" };
         String openFileWay = "";
-        private int defaultWidth = 806;
-        private int defaultHeight = 497;
-        private int defaultLeft = 557;
-        private int defaultTop = 271;
         private int maxItems = 20;
         public Form1()
         {
@@ -168,7 +164,6 @@ namespace open_file
             if (e.Button == MouseButtons.Left)
             {
                 if ( textBox1.Text.Equals("ldq") ) { 
-                    RestoreDefaultWindowSettings();
                     textBox1.Text="";
                     return;
                 }
@@ -183,9 +178,9 @@ namespace open_file
                 if (File.Exists(txt))
                 {
                     System.Diagnostics.Process.Start(openFileWay, txt);
-                    if (!listBox1.Items.Contains(txt))
+                    if (!listBox1.Items.Contains(textBox1.Text.Replace("/", @"\")))
                     {
-                        listBox1.Items.Add(txt.Replace("/", @"\"));
+                        listBox1.Items.Add(textBox1.Text.Replace("/", @"\"));
                         listBox1.SelectedIndex = listBox1.Items.Count - 1;
                     }
 
@@ -243,9 +238,9 @@ namespace open_file
                
                 System.Diagnostics.Process.Start("Explorer.exe", txt);
 
-                if (!listBox1.Items.Contains(txt))
+                if (!listBox1.Items.Contains(textBox1.Text.Replace("/", @"\")))
                 {
-                    listBox1.Items.Add(txt.Replace("/", @"\"));
+                    listBox1.Items.Add(textBox1.Text.Replace("/", @"\"));
                     listBox1.SelectedIndex = listBox1.Items.Count - 1;
                 }
 
@@ -253,9 +248,9 @@ namespace open_file
             else if (Directory.Exists(txt))
             {
                 System.Diagnostics.Process.Start("Explorer.exe", txt);
-                if (!listBox1.Items.Contains(txt))
+                if (!listBox1.Items.Contains(textBox1.Text.Replace("/", @"\")))
                 {
-                    listBox1.Items.Add(txt.Replace("/", @"\"));
+                    listBox1.Items.Add(textBox1.Text.Replace("/", @"\"));
                     listBox1.SelectedIndex = listBox1.Items.Count - 1;
                    
                 }
@@ -359,46 +354,9 @@ namespace open_file
             {
                 return;
             }
-            string str = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
-            if (str.Contains(SelectPath))
-            {
-                textBox1.Text = str.Substring(SelectPath.Length);
-            }
-            else {
-                MessageBox.Show("无法识别！");
-            }
-             
+            textBox1.Text = listBox1.GetItemText(listBox1.Items[listBox1.SelectedIndex]);
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Properties.Settings.Default.FormWidth = this.Width;
-            Properties.Settings.Default.FormHeight = this.Height;
-            Properties.Settings.Default.FormLeft = this.Left;
-            Properties.Settings.Default.FormTop = this.Top;
-            Properties.Settings.Default.Save();
-            
-           
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.Width = Properties.Settings.Default.FormWidth;
-            this.Height = Properties.Settings.Default.FormHeight;
-            this.Left = Properties.Settings.Default.FormLeft;
-            this.Top = Properties.Settings.Default.FormTop;
-            if ( this.Width <= 0 || this.Height <= 0 || this.Left <= 0 || this.Top <= 0 ) {
-                RestoreDefaultWindowSettings();
-            }
-        }
-
-        public void RestoreDefaultWindowSettings()
-        {
-            this.Width = defaultWidth;
-            this.Height = defaultHeight;
-            this.Left = defaultLeft;
-            this.Top = defaultTop;
-        }
 
         private bool IsApkFile(string filePath)
         {
@@ -436,6 +394,57 @@ namespace open_file
             {
                 textBox2.Text = "请拖放有效的APK文件(.apk)";
             }
+        }
+
+        private void btnRemote_Click(object sender, EventArgs e)
+        {
+            // 1. 实例化 Form4
+            Form4 remote = new Form4();
+
+            // 2. 设置启动位置为“手动指定”
+            remote.StartPosition = FormStartPosition.Manual;
+
+            // 3. 计算位置：Form1 的右边界坐标，Form1 的顶部对齐
+            // this.Right 是 Form1 右侧的坐标，this.Top 是 Form1 顶部的坐标
+            int targetX = this.Right + 5; // 加5个像素的间距，好看一点
+            int targetY = this.Top;
+
+            // 4. 检查是否超出屏幕右侧（可选逻辑）
+            // 如果屏幕右边没位置了，就弹在 Form1 的左边
+            if (targetX + remote.Width > Screen.PrimaryScreen.WorkingArea.Width)
+            {
+                targetX = this.Left - remote.Width - 5;
+            }
+
+            remote.Location = new Point(targetX, targetY);
+
+            // 5. 显示窗体
+            remote.Show();
+        }
+
+        // 点击打开 ADB 工具箱
+        private void btnAdbTools_Click(object sender, EventArgs e)
+        {
+            // 创建 Form5 实例
+            Form5 adbForm = new Form5();
+
+            // 2. 设置启动位置为“手动指定”
+            adbForm.StartPosition = FormStartPosition.Manual;
+
+            // 3. 计算位置：Form1 的右边界坐标，Form1 的顶部对齐
+            // this.Right 是 Form1 右侧的坐标，this.Top 是 Form1 顶部的坐标
+            int targetX = this.Right + 5; // 加5个像素的间距，好看一点
+            int targetY = this.Top;
+
+            // 4. 检查是否超出屏幕右侧（可选逻辑）
+            // 如果屏幕右边没位置了，就弹在 Form1 的左边
+            if (targetX + adbForm.Width > Screen.PrimaryScreen.WorkingArea.Width)
+            {
+                targetX = this.Left - adbForm.Width - 5;
+            }
+            adbForm.Location = new Point(targetX, targetY);
+            // 显示窗口
+            adbForm.Show();
         }
     }
 }
