@@ -43,7 +43,10 @@ namespace open_file
             this.btnRemote = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlActions = new System.Windows.Forms.Panel();
+            this.btnAdbTools = new System.Windows.Forms.Button();
             this.pnlComboBorder = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.pnlActions.SuspendLayout();
             this.pnlComboBorder.SuspendLayout();
             this.SuspendLayout();
@@ -156,24 +159,10 @@ namespace open_file
             this.btnRemote.UseVisualStyleBackColor = false;
             this.btnRemote.Click += new System.EventHandler(this.btnRemote_Click);
             // 
-            // btnAdbTools (新添加的按钮)
-            // 
-            this.btnAdbTools = new System.Windows.Forms.Button(); // 记得在类成员中声明
-            this.btnAdbTools.BackColor = System.Drawing.Color.White;
-            this.btnAdbTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdbTools.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold);
-            this.btnAdbTools.Location = new System.Drawing.Point(13, 220); // 坐标顺延 (165 + 40 + 15)
-            this.btnAdbTools.Name = "btnAdbTools";
-            this.btnAdbTools.Size = new System.Drawing.Size(130, 40);
-            this.btnAdbTools.TabIndex = 3;
-            this.btnAdbTools.Text = "🛠 ADB 工具箱";
-            this.btnAdbTools.UseVisualStyleBackColor = false;
-            this.btnAdbTools.Click += new System.EventHandler(this.btnAdbTools_Click);
-            // 
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label1.Location = new System.Drawing.Point(0, 519);
+            this.label1.Location = new System.Drawing.Point(0, 531);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.label1.Size = new System.Drawing.Size(790, 30);
@@ -191,8 +180,21 @@ namespace open_file
             this.pnlActions.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlActions.Location = new System.Drawing.Point(634, 0);
             this.pnlActions.Name = "pnlActions";
-            this.pnlActions.Size = new System.Drawing.Size(156, 519);
+            this.pnlActions.Size = new System.Drawing.Size(156, 531);
             this.pnlActions.TabIndex = 4;
+            // 
+            // btnAdbTools
+            // 
+            this.btnAdbTools.BackColor = System.Drawing.Color.White;
+            this.btnAdbTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdbTools.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold);
+            this.btnAdbTools.Location = new System.Drawing.Point(13, 220);
+            this.btnAdbTools.Name = "btnAdbTools";
+            this.btnAdbTools.Size = new System.Drawing.Size(130, 40);
+            this.btnAdbTools.TabIndex = 3;
+            this.btnAdbTools.Text = "🛠 ADB 工具箱";
+            this.btnAdbTools.UseVisualStyleBackColor = false;
+            this.btnAdbTools.Click += new System.EventHandler(this.btnAdbTools_Click);
             // 
             // pnlComboBorder
             // 
@@ -204,12 +206,35 @@ namespace open_file
             this.pnlComboBorder.Size = new System.Drawing.Size(515, 29);
             this.pnlComboBorder.TabIndex = 0;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(11, 519);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "APK签名:";
+            // 
+            // textBox3
+            // 
+            this.textBox3.AllowDrop = true;
+            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox3.Location = new System.Drawing.Point(75, 517);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(545, 21);
+            this.textBox3.TabIndex = 7;
+            this.textBox3.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox3_DragDrop);
+            this.textBox3.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox3_DragEnter);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(790, 549);
+            this.ClientSize = new System.Drawing.Size(790, 561);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.listBox1);
@@ -246,6 +271,8 @@ namespace open_file
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox2;
         private Label label2;
+        private Label label3;
+        private TextBox textBox3;
     }
 }
 

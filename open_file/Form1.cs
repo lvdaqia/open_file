@@ -446,5 +446,42 @@ namespace open_file
             // 显示窗口
             adbForm.Show();
         }
+
+        private void textBox3_DragEnter(object sender, DragEventArgs e)
+        {
+            // 这里只负责：检查文件，显示“小加号”图标
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length == 1 && IsApkFile(files[0]))
+                {
+                    e.Effect = DragDropEffects.Copy; // 显示加号
+                    return;
+                }
+            }
+            e.Effect = DragDropEffects.None; // 显示禁止符号
+        }
+
+        private void textBox3_DragDrop(object sender, DragEventArgs e)
+        {
+            // 这里才负责：获取路径，弹出 Form6
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files != null && files.Length > 0 && IsApkFile(files[0]))
+            {
+                // 修正路径并赋值
+                string apkPath = files[0].Replace("/", "\\").Trim();
+                textBox3.Text = apkPath;
+
+                // 弹出 Form6
+                // 注意：这里用 apkPath 干净的变量，不要带 Environment.NewLine
+                Form6 f6 = new Form6(apkPath, SelectPath);
+                f6.Show();
+            }
+            else
+            {
+                textBox3.Text = "请拖放有效的APK文件(.apk)";
+            }
+        }
     }
 }
